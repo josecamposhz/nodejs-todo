@@ -1,4 +1,4 @@
-const Users = require('../Models/Users')
+const User = require('../Models/User')
 const jwt = require('jsonwebtoken')
 
 isAuthenticated = (req, res, next) => {
@@ -12,7 +12,7 @@ isAuthenticated = (req, res, next) => {
             return res.status(500).send({ error: err })
         }
         const { _id } = decoded
-        Users.findOne({ _id }).exec().then(user => {
+        User.findOne({ _id }).exec().then(user => {
             req.user = user
             return next()
         })

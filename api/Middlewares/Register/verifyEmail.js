@@ -1,9 +1,9 @@
-const User = require('../Models/User')
+const User = require('../../Models/User')
 
 verifyEmail = (req, res, next) => {
-    const emailRegexp = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+    const emailRegExp = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
     // Se valida si el email ingresado es correcto
-    if (emailRegexp.test(req.body.email)) {
+    if (emailRegExp.test(req.body.email)) {
         // Se verifica si el email ingresado ya existe en la base de datos
         User.findOne({
             where: {

@@ -2,7 +2,7 @@ const AuthController = {};
 
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
-const Users = require('../Models/User')
+const User = require('../Models/User')
 
 const signToken = (_id) => {
     return jwt.sign({ _id }, 'secret', {
@@ -12,9 +12,9 @@ const signToken = (_id) => {
 
 AuthController.login = (req, res) => {
     const { email, password } = req.body
-    Users.findOne({ email }).exec().then( user => {
+    User.findOne({ email }).exec().then(user => {
         if (!user) {
-            return res.status(404).send('Usuario no encontrado')
+            return res.status(404).send({ error: 'Usuario no encontrado' })
         }
 
         bcrypt.compare(password, user.password, (err, decrypt) => {
@@ -23,13 +23,14 @@ AuthController.login = (req, res) => {
             }
 
             if (decrypt) {
+                user.password = undefined // quitamos la contraseña de la respuesta a devolver
                 const token = signToken(user._id)
                 return res.send({ user: user, token: token })
             } else {
-                return res.status(500).send({ error: 'Contraseña incorrecta'});
+                return res.status(500).send({ error: 'Contraseña incorrecta' });
             }
         })
-           
+
     })
 }
 

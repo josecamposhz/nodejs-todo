@@ -24,11 +24,11 @@ UserController.create = async (req, res) => {
 
 // Retorna todos los usuarios registrados
 UserController.all = async (req, res) => {
-    User.find().exec().then(users => res.send(users))
+    User.find({}, { first_name: 1, last_name: 1, email: 1, createdAt: 1 }).sort( { createdAt: -1 } ).then(users => res.send(users))
 }
 
 UserController.find = (req, res) => {
-    Users.findById(req.params.id)
+    User.findById(req.params.id)
         .exec()
         .then(user => {
             res.status(200).send(user)
@@ -36,12 +36,12 @@ UserController.find = (req, res) => {
 }
 
 UserController.update = (req, res) => {
-    Users.findByIdAndUpdate(req.paramas.id, req.body)
+    User.findByIdAndUpdate(req.params.id, req.body)
         .then(user => res.status(200).send(user))
 }
 
 UserController.delete = (req, res) => {
-    Users.findByIdAndDelete(req.params.id)
+    User.findByIdAndDelete(req.params.id)
         .exec()
         .then( () => {
             res.sendStatus(204)
